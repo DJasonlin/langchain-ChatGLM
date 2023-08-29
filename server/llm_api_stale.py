@@ -7,6 +7,8 @@
 import sys
 import os
 
+from configs import FSCHAT_OPENAI_API
+
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
 import subprocess
@@ -137,7 +139,7 @@ worker_args = [
 # -----------------openai server---------------------------
 
 parser.add_argument("--server-host", type=str, default="localhost", help="host name")
-parser.add_argument("--server-port", type=int, default=8888, help="port number")
+parser.add_argument("--server-port", type=int, default=FSCHAT_OPENAI_API["port"], help="port number")
 parser.add_argument(
     "--allow-credentials", action="store_true", help="allow credentials"
 )

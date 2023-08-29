@@ -1,4 +1,6 @@
 import os
+import datetime
+
 from langchain.embeddings.huggingface import HuggingFaceEmbeddings
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.embeddings import HuggingFaceBgeEmbeddings
@@ -13,6 +15,7 @@ from functools import lru_cache
 import importlib
 from text_splitter import zh_title_enhance
 
+DEFAULT_PAGESIZE = 20
 
 def validate_kb_name(knowledge_base_id: str) -> bool:
     # 检查是否包含预期外的字符或路径攻击关键字
@@ -40,6 +43,15 @@ def list_docs_from_folder(kb_name: str):
     doc_path = get_doc_path(kb_name)
     return [file for file in os.listdir(doc_path)
             if os.path.isfile(os.path.join(doc_path, file))]
+
+
+def list_docs_from_folder_by_page(kb_name: str, page: int):
+    doc_path = get_doc_path(kb_name)
+    # 获取目录下的所有文件
+    files = os.listdir(doc_path)
+    # 将文件按时间倒序排序
+    files.sort(key=lambda x: datetime.datetime.fromtimestamp(os.path.getmtime(os.path.join(doc_path, x))), reverse=True)
+    return files[DEFAULT_PAGESIZE * (page - 1):DEFAULT_PAGESIZE * page]
 
 @lru_cache(1)
 def load_embeddings(model: str, device: str):

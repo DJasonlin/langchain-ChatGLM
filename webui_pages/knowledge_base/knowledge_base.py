@@ -23,6 +23,7 @@ def config_aggrid(
         use_checkbox: bool = False,
 ) -> GridOptionsBuilder:
     gb = GridOptionsBuilder.from_dataframe(df)
+    gb.configure_pagination(enabled=True, paginationAutoPageSize=True, paginationPageSize=20)
     gb.configure_column("No", width=40)
     for (col, header), kw in columns.items():
         gb.configure_column(col, header, wrapHeaderText=True, **kw)
@@ -169,11 +170,11 @@ def knowledge_base_page(api: ApiRequest):
                 {
                     ("No", "序号"): {},
                     ("file_name", "文档名称"): {},
-                    # ("file_ext", "文档类型"): {},
+                    ("file_ext", "文档类型"): {},
                     # ("file_version", "文档版本"): {},
                     ("document_loader", "文档加载器"): {},
                     ("text_splitter", "分词器"): {},
-                    # ("create_time", "创建时间"): {},
+                    ("create_time", "创建时间"): {},
                     ("in_folder", "源文件"): {"cellRenderer": cell_renderer},
                     ("in_db", "向量库"): {"cellRenderer": cell_renderer},
                 },

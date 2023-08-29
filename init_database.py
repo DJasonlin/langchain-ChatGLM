@@ -21,6 +21,16 @@ if __name__ == "__main__":
             '''
         )
     )
+
+    parser.add_argument(
+        "--increament",  # Corrected argument name
+        action="store_true",
+        help=('''
+            increament 100 vector stores.
+        '''
+              )
+    )
+
     args = parser.parse_args()
 
     dump_server_info()
@@ -31,6 +41,10 @@ if __name__ == "__main__":
     if args.recreate_vs:
         print("recreating all vector stores")
         recreate_all_vs()
+    if args.increament:
+        print("increament 100 vector stores")
+        for kb in list_kbs_from_folder():
+            folder2db(kb, "increament")
     else:
         print("filling kb infos to database")
         for kb in list_kbs_from_folder():

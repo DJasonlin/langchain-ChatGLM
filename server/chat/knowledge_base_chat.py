@@ -34,6 +34,7 @@ def knowledge_base_chat(query: str = Body(..., description="用户输入", examp
                         local_doc_url: bool = Body(False, description="知识文件返回本地路径(true)或URL(false)"),
                         request: Request = None,
                         ):
+    print("Search db_name {}, query's {}".format(knowledge_base_name, query))
     kb = KBServiceFactory.get_service_by_name(knowledge_base_name)
     if kb is None:
         return BaseResponse(code=404, msg=f"未找到知识库 {knowledge_base_name}")
@@ -55,6 +56,7 @@ def knowledge_base_chat(query: str = Body(..., description="用户输入", examp
             model_name=LLM_MODEL,
             openai_proxy=llm_model_dict[LLM_MODEL].get("openai_proxy")
         )
+        print("Request model is {}".format(model))
         docs = search_docs(query, knowledge_base_name, top_k, score_threshold)
         context = "\n".join([doc.page_content for doc in docs])
 

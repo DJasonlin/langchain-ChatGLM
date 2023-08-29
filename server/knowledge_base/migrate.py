@@ -5,6 +5,7 @@ from server.db.repository.knowledge_file_repository import add_doc_to_db
 from server.db.base import Base, engine
 import os
 from typing import Literal, Callable, Any
+import datetime
 
 
 def create_tables():
@@ -36,6 +37,7 @@ def folder2db(
     kb.create_kb()
 
     if mode == "recreate_vs":
+        starttime = datetime.datetime.now().timestamp()
         kb.clear_vs()
         docs = list_docs_from_folder(kb_name)
         for i, doc in enumerate(docs):
@@ -52,6 +54,7 @@ def folder2db(
                     callback_after(kb_file, i, docs)
             except Exception as e:
                 print(e)
+            print("[{}]Processing completed-{}, waitting-{}, time cost-{} s".format(datetime.datetime.now(), i, (100 - i), int(datetime.datetime.now().timestamp() - starttime)))
     elif mode == "fill_info_only":
         docs = list_docs_from_folder(kb_name)
         for i, doc in enumerate(docs):
@@ -83,7 +86,7 @@ def folder2db(
     elif mode == "increament":
         db_docs = kb.list_docs()
         folder_docs = list_docs_from_folder(kb_name)
-        docs = list(set(folder_docs) - set(db_docs))
+        docs = list(set(folder_docs) - set(db_docs))[:101]
         for i, doc in enumerate(docs):
             try:
                 kb_file = KnowledgeFile(doc, kb_name)
