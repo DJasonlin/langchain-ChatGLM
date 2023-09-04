@@ -54,7 +54,7 @@ def folder2db(
                     callback_after(kb_file, i, docs)
             except Exception as e:
                 print(e)
-            print("[{}]Processing completed-{}, waitting-{}, time cost-{} s".format(datetime.datetime.now(), i, (100 - i), int(datetime.datetime.now().timestamp() - starttime)))
+            print("[{}]Processing completed-{}, waitting-{}, time cost-{} s".format(datetime.datetime.now(), i, (len(docs) - i), int(datetime.datetime.now().timestamp() - starttime)))
     elif mode == "fill_info_only":
         docs = list_docs_from_folder(kb_name)
         for i, doc in enumerate(docs):
@@ -84,9 +84,11 @@ def folder2db(
             except Exception as e:
                 print(e)
     elif mode == "increament":
+        size = 100
+        starttime = datetime.datetime.now().timestamp()
         db_docs = kb.list_docs()
         folder_docs = list_docs_from_folder(kb_name)
-        docs = list(set(folder_docs) - set(db_docs))[:101]
+        docs = list(set(folder_docs) - set(db_docs))[:size+1]
         for i, doc in enumerate(docs):
             try:
                 kb_file = KnowledgeFile(doc, kb_name)
@@ -101,6 +103,7 @@ def folder2db(
                     callback_after(kb_file, i, docs)
             except Exception as e:
                 print(e)
+            print("[{}]Processing completed-{}, waitting-{}, time cost-{} s".format(datetime.datetime.now(), i, (size - i), int(datetime.datetime.now().timestamp() - starttime)))
     else:
         raise ValueError(f"unspported migrate mode: {mode}")
 

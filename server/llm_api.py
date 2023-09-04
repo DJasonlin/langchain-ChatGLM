@@ -3,8 +3,6 @@ import multiprocessing as mp
 import sys
 import os
 
-from configs import FSCHAT_OPENAI_API
-
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from configs.model_config import llm_model_dict, LLM_MODEL, LLM_DEVICE, LOG_PATH, logger
 from server.utils import MakeFastAPIOffline
@@ -13,7 +11,7 @@ from server.utils import MakeFastAPIOffline
 host_ip = "0.0.0.0"
 controller_port = 20001
 model_worker_port = 20002
-openai_api_port = FSCHAT_OPENAI_API["port"]
+openai_api_port = 10001
 base_url = "http://127.0.0.1:{}"
 
 
@@ -149,7 +147,7 @@ def create_model_worker_app(
     sys.modules["fastchat.serve.model_worker"].worker = worker
     sys.modules["fastchat.serve.model_worker"].args = args
     sys.modules["fastchat.serve.model_worker"].gptq_config = gptq_config
-    
+
     MakeFastAPIOffline(app)
     app.title = f"FastChat LLM Server ({LLM_MODEL})"
     return app

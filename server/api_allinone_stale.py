@@ -18,9 +18,10 @@ sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from llm_api_stale import launch_all, parser, controller_args, worker_args, server_args
 from api import create_app
 import uvicorn
+from configs import API_SERVER
 
-parser.add_argument("--api-host", type=str, default="0.0.0.0")
-parser.add_argument("--api-port", type=int, default=7861)
+parser.add_argument("--api-host", type=str, default=API_SERVER["host"])
+parser.add_argument("--api-port", type=int, default=API_SERVER["port"])
 parser.add_argument("--ssl_keyfile", type=str)
 parser.add_argument("--ssl_certfile", type=str)
 

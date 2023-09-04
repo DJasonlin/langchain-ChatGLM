@@ -1,3 +1,5 @@
+import datetime
+
 from fastapi import Body, Request
 from fastapi.responses import StreamingResponse
 from configs.model_config import (llm_model_dict, LLM_MODEL, PROMPT_TEMPLATE,
@@ -34,7 +36,7 @@ def knowledge_base_chat(query: str = Body(..., description="用户输入", examp
                         local_doc_url: bool = Body(False, description="知识文件返回本地路径(true)或URL(false)"),
                         request: Request = None,
                         ):
-    print("Search db_name {}, query's {}".format(knowledge_base_name, query))
+    print("[{}] knowledge_base_chat: query-{}, knowledge_base_name-{}, top_k-{}, score_threshold-{}".format(datetime.datetime.now(), query, knowledge_base_name, top_k, score_threshold))
     kb = KBServiceFactory.get_service_by_name(knowledge_base_name)
     if kb is None:
         return BaseResponse(code=404, msg=f"未找到知识库 {knowledge_base_name}")

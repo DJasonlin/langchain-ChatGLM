@@ -19,6 +19,7 @@ from server.knowledge_base.kb_doc_api import (list_docs, upload_doc, delete_doc,
                                               search_docs, DocumentWithScore)
 from server.utils import BaseResponse, ListResponse, FastAPI, MakeFastAPIOffline
 from typing import List
+from configs import API_SERVER
 
 nltk.data.path = [NLTK_DATA_PATH] + nltk.data.path
 
@@ -145,8 +146,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(prog='langchain-ChatGLM',
                                      description='About langchain-ChatGLM, local knowledge based ChatGLM with langchain'
                                                  ' ｜ 基于本地知识库的 ChatGLM 问答')
-    parser.add_argument("--host", type=str, default="0.0.0.0")
-    parser.add_argument("--port", type=int, default=7861)
+    parser.add_argument("--host", type=str, default=API_SERVER["host"])
+    parser.add_argument("--port", type=int, default=API_SERVER["port"])
     parser.add_argument("--ssl_keyfile", type=str)
     parser.add_argument("--ssl_certfile", type=str)
     # 初始化消息
